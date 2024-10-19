@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sign in page</title>
+        <link rel="stylesheet" href="sign.css">
+        <link rel="icon" href="llogo.png" />
+        <link rel="apple-touch-icon" href="starbucks_logo_icon_170704.png" />
+    </head>
+    <body>
+        <section>
+            <div class="container">
+                <div class="user signInBx">
+                    <div class="imgBx">
+                        <img src="sign_in_img.png" height="500" width="400">
+                    </div>
+                    <div class="formBx">
+                        <form action="index.html">
+                            <h2>Sign In</h2>
+                            <input type="text" name="" id="text" placeholder="Username">
+                            <input type="password" name="" id="pswd" placeholder="Password">
+                            <input type="submit" id="signIn"  name="" placeholder="Login">
+                            <p class="signup">Don't have an account? <a href="#" onclick="toggleForm();">Sign up</a></p>
+                        </form>
+                    </div>
+                </div>
+                <div class="user signupBx">
+                    <div class="formBx">
+                        <form action="index.html">
+                            <h2>Create an account</h2>
+                            <input type="text" name="" placeholder="Username" id="username">
+                            <input type="email" name="" placeholder="Email Address" id="email">
+                            <input type="password" name="" placeholder="Create Password" >
+                            <input type="password" name="" placeholder="ConfirmPassword" id="password">
+                            <input type="submit" id="submit" name="" placeholder="Login" >
+                            <p class="signup">Already have an account? <a href="#" onclick="toggleForm();">Sign in</a></p>
+                            </form>
+                        </div>
+                        <div class="imgBx">
+                            <img src="https://images.unsplash.com/photo-1542729779-11d8fe8e25f6?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8OHx8fGVufDB8fHw%3D&w=1000&q=80" height="500" width="400">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-database.js"></script>
+        <script type="text/javascript">
+        function toggleForm(){
+            var container = document.querySelector('.container');
+            container.classList.toggle('active')
+        }</script> 
+           <script type="module">
+    
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getDatabase, ref, set, get, child, push } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";       
+    // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            const firebaseConfig = {
+            apiKey: "AIzaSyDDTh0IlHyo5yuzxSVv_6mjrxf-yA2Wc3g",
+            authDomain: "deproject-a5bad.firebaseapp.com",
+            projectId: "deproject-a5bad",
+            storageBucket: "deproject-a5bad.appspot.com",
+            messagingSenderId: "1092990927783",
+            appId: "1:1092990927783:web:7785f1879af74ad31bac82",
+            };
+    
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const database = getDatabase(app);
+    
+            document.getElementById('submit').addEventListener('click',(e)=>{
+                e.preventDefault();
+                var username = document.getElementById('username').value;
+                var email = document.getElementById('email').value;
+                var password = document.getElementById('password').value;
+    
+                set(ref(database, 'users/' +  Math.random().toString(36).slice(2, 7)), {
+                    username: username,
+                    email: email,
+                    password : password
+                }).then(() => {
+                // Data saved successfully!
+                alert("Saved")
+                document.location.href="index.html";    
+    
+                })
+                .catch((error) => {
+                // The write failed...
+                console.log(error);
+                });
+    
+    
+            })
+    
+            document.getElementById('signIn').addEventListener('click',(e)=>{
+                e.preventDefault();
+                console.log("jhfj");
+                var username = document.getElementById('text').value;
+                var password = document.getElementById('pswd').value;
+                const auth = getAuth();
+                signInWithEmailAndPassword(auth,username,password)
+                .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                    // ...
+                })
+                .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
+        })
+
+        </script>
+    </body>
+</html>
